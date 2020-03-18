@@ -1,7 +1,5 @@
 import lib_fa_game as game
 
-#Test change to demonstrate github.  Another Change
-
 print("-- Creating map of locations with links")        
 mailbox = game.location("Mailbox")
 mailbox.short_description = "This is the inside of a mailbox"
