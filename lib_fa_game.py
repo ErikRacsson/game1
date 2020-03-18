@@ -29,11 +29,13 @@ class characters:
             print(f"\t{attribute} is {self.attributes[attribute]}")
     
     def createchar(name, location):
-        ''' attempt to create a new character with given name and place in the specified location
+        ''' attempt to create a new character with given name and place in the
+            specified location
             name - string representing the desired name for the character
-            location - location object where character should initially be placed
+            location - location object where character should be placed
             
-            returns character object reference or ERR_NAME_EXISTS if character name already exists.
+            returns character object reference or ERR_NAME_EXISTS if
+            character name already exists.
         '''
         if name in characters.names:
             return(ERR_NAME_EXISTS)
@@ -41,16 +43,19 @@ class characters:
             return(characters(name, location))
     
     def move(self, port):
-        ''' move a character to a new location by way of a specified port (door) name
+        ''' move a character to a new location by way of a specified port
+            (door) name
         
-            port = string that is the name of the port in the location of the character
+            port = string that is the name of the port in the location
+                   of the character
         '''
         valid_ports = self.location.ports
         return_list = []
         if port in valid_ports:
             return_list.extend(valid_ports[port].use(self))
         else:
-            return_list.append(f"There is no way you can reach the {port} here.")
+            return_list.append(f'There is no way you can reach ' 
+                               f'the {port} here.')
         return(return_list)
         
     def look_around(self):
@@ -76,7 +81,8 @@ class characters:
             
     def list():
         for character in characters.names :
-            print(f'{character} is in {characters.names[character].location.name}')
+            print(f'{character} is in '
+                  f'{characters.names[character].location.name}')
 
 
 class location:
@@ -98,7 +104,8 @@ class location:
         return_list.append(f"There are {len(self.characters)} characters here:")
         for name in self.characters:
             return_list.append(f'\t{name}')
-        return_list.append(f"There are {len(self.ports)} ways in and out of here:")
+        return_list.append(f'There are {len(self.ports)} '
+                           f'ways in and out of here:')
         for port_name in self.ports:
             return_list.append(f'\t{port_name}')
         return(return_list)
@@ -173,7 +180,8 @@ class ports:
     
     def list():
         for port in ports.__all:
-            print(f'{port} is connecting {ports.__all[port].side_a.name} to {ports.__all[port].side_b.name}')
+            print(f'{port} is connecting {ports.__all[port].side_a.name} '
+                  f'to {ports.__all[port].side_b.name}')
 
 class entity:
     def __init__(self, name):
