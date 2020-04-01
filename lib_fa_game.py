@@ -3,7 +3,9 @@ import random
 import types
 
 # Return codes for bad things.  TODO: Replace this construct with exception raising
+SUCCESS = 0
 ERR_NAME_EXISTS = 1
+ERR_NOT_THERE = 2
 
 class characters:
     names = {}
@@ -16,7 +18,7 @@ class characters:
         characters.names[name] = self
         self.location = "new"
         location.enter(self)
-        self.holding = ""
+        self.inventory = []
     
     def __init_attributes(self):
         self.attributes["strength"] = random.randint(1,10)
@@ -66,9 +68,21 @@ class characters:
         return(return_list)
     
     def take(self, thing_to_take):
-        if isinstance(thing_to_Take, types.entityType):
-            self.holding = thing_to_take
-        
+        #Look to see if item is in room.
+        items_in_room = self.location.list_entities()
+        if thing_to_take in items_in_room:
+            self.inventory.append(self.location.take_entity(thing_to_take))
+            return(SUCCESS)
+        return(ERR_NOT_THERE)
+        #If in room, character take item into inventory (removed from room's
+        #inventory)
+        #If not in room, fail to take item
+    
+    def view_inventory(self):
+        return_list = []
+        for item in self.inventory:
+            return_list.append(item.name)
+        return(return_list)
 
     def count():
         return(len(characters.names))
@@ -95,7 +109,7 @@ class location:
         self.short_description = "Generic Location"
         self.characters = dict()
         self.ports = {}
-        self.things = []
+        self.entities = {}
         
     def look(self):
         return_list = []
@@ -104,11 +118,15 @@ class location:
         return_list.append(f"There are {len(self.characters)} characters here:")
         for name in self.characters:
             return_list.append(f'\t{name}')
+        return_list.append(f"There are {len(self.entities)} items here:")
+        for name in self.entities:
+            return_list.append(f'\t{name}')
         return_list.append(f'There are {len(self.ports)} '
                            f'ways in and out of here:')
         for port_name in self.ports:
             return_list.append(f'\t{port_name}')
         return(return_list)
+        
         
     def enter(self, character):
         return_list = []
@@ -133,7 +151,20 @@ class location:
     def describe_chars(self):
         for character in self.characters:
             character.describe()
-            
+
+    def put_entity(self, item):
+        self.entities[item.name] = item
+        
+    def list_entities(self):
+        return_list = []
+        for entity in self.entities:
+            return_list.append(entity)
+        return(return_list)
+    
+    def take_entity(self, item):
+        if item in self.entities:
+            return(self.entities.pop(item))
+
     def list_verbose():
         return_list = []
         for loc in location.names :
