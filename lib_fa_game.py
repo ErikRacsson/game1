@@ -7,9 +7,10 @@ SUCCESS = 0
 ERR_NAME_EXISTS = 1
 ERR_NOT_THERE = 2
 
+
 class characters:
     names = {}
-    
+
     def __init__(self, name, location, race="human"):
         self.name = name
         self.race = race
@@ -19,17 +20,40 @@ class characters:
         self.location = "new"
         location.enter(self)
         self.inventory = []
-    
+        self.__init_inventory()
+
     def __init_attributes(self):
-        self.attributes["strength"] = random.randint(1,10)
-        self.attributes["intelligence"] = random.randint(1,10)
-        self.attributes["dexterity"] = random.randint(1,10)
-    
+        self.attributes["strength"] = random.randint(1, 10)
+        self.attributes["intelligence"] = random.randint(1, 10)
+        self.attributes["dexterity"] = random.randint(1, 10)
+
+    def __init_inventory(self):
+        for i in range(0, 32):
+            self.inventory.append("_")
+        self.inventory[0] = "a small tuft of lint"
+        self.inventory[1] = "The One Ring to rule them all"
+        self.inventory[2] = "a secret mousecatool that will help us later"
+
+    def drop(self, thing_to_drop):
+
+        if thing_to_drop.isdigit():
+            self.location.put_entity(self.inventory[((int(thing_to_drop)-1))])
+            print(f'\n{self.inventory[(int(thing_to_drop)-1)]} dropped!\n')
+            self.inventory[(int(thing_to_drop)-1)] = "_"
+        elif thing_to_drop in self.inventory:
+            self.location.put_entity(thing_to_drop)
+            print(f'\n {thing_to_drop} dropped!\n')
+            self.inventory[self.inventory.index(thing_to_drop)] = "_"
+        else:
+            print("The item you wished to drop was not listed in your inventory. Please try again.")
+
+    # print('\n')
+
     def describe(self):
         print("{} is a {}.".format(self.name, self.race))
         for attribute in self.attributes:
             print(f"\t{attribute} is {self.attributes[attribute]}")
-    
+
     def createchar(name, location):
         ''' attempt to create a new character with given name and place in the
             specified location
@@ -40,10 +64,10 @@ class characters:
             character name already exists.
         '''
         if name in characters.names:
-            return(ERR_NAME_EXISTS)
+            return (ERR_NAME_EXISTS)
         else:
-            return(characters(name, location))
-    
+            return (characters(name, location))
+
     def move(self, port):
         ''' move a character to a new location by way of a specified port
             (door) name
@@ -56,52 +80,52 @@ class characters:
         if port in valid_ports:
             return_list.extend(valid_ports[port].use(self))
         else:
-            return_list.append(f'There is no way you can reach ' 
+            return_list.append(f'There is no way you can reach '
                                f'the {port} here.')
-        return(return_list)
-        
+        return (return_list)
+
     def look_around(self):
         ''' return a string list describing the character's environment '''
         return_list = []
         return_list.append(f'{self.name} is in the {self.location.name}')
         return_list.extend(self.location.look())
-        return(return_list)
-    
+        return (return_list)
+
     def take(self, thing_to_take):
-        #Look to see if item is in room.
+        # Look to see if item is in room.
         items_in_room = self.location.list_entities()
         if thing_to_take in items_in_room:
             self.inventory.append(self.location.take_entity(thing_to_take))
-            return(SUCCESS)
-        return(ERR_NOT_THERE)
-        #If in room, character take item into inventory (removed from room's
-        #inventory)
-        #If not in room, fail to take item
-    
+            return (SUCCESS)
+        return (ERR_NOT_THERE)
+        # If in room, character take item into inventory (removed from room's
+        # inventory)
+        # If not in room, fail to take item
+
     def view_inventory(self):
         return_list = []
         for item in self.inventory:
             return_list.append(item.name)
-        return(return_list)
+        return (return_list)
 
     def count():
-        return(len(characters.names))
-        
+        return (len(characters.names))
+
     def describechar(name):
         if name in characters.names:
             characters.names[name].describe()
         else:
             print("Sorry, can't find anyone named {}.".format(name))
-            
+
     def list():
-        for character in characters.names :
+        for character in characters.names:
             print(f'{character} is in '
                   f'{characters.names[character].location.name}')
 
 
 class location:
     names = dict()
-    
+
     def __init__(self, name):
         self.name = name
         location.names[name] = self
@@ -109,8 +133,9 @@ class location:
         self.short_description = "Generic Location"
         self.characters = dict()
         self.ports = {}
-        self.entities = {}
-        
+        self.entities = []
+        self.items = {}
+
     def look(self):
         return_list = []
         return_list.append(self.name)
@@ -125,9 +150,8 @@ class location:
                            f'ways in and out of here:')
         for port_name in self.ports:
             return_list.append(f'\t{port_name}')
-        return(return_list)
-        
-        
+        return (return_list)
+
     def enter(self, character):
         return_list = []
         if character.location != "new":
@@ -136,51 +160,53 @@ class location:
         return_list.append(f'{self.short_description}')
         self.characters[character.name] = character
         character.location = self
-        return(return_list)
-    
+        return (return_list)
+
     def exit(self, character):
         return_list = []
         del self.characters[character.name]
         return_list.append(f'{character.name} has exited the {self.name}')
-        return(return_list)
-        
+        return (return_list)
+
     def look_chars(self):
         for character in self.characters:
             print(f'{character} is here')
-            
+
     def describe_chars(self):
         for character in self.characters:
             character.describe()
 
     def put_entity(self, item):
-        self.entities[item.name] = item
-        
+        self.entities.append(item)
+
     def list_entities(self):
         return_list = []
         for entity in self.entities:
             return_list.append(entity)
-        return(return_list)
-    
+        return (return_list)
+
     def take_entity(self, item):
         if item in self.entities:
-            return(self.entities.pop(item))
+            return self.entities.pop(item)
 
     def list_verbose():
         return_list = []
-        for loc in location.names :
+        for loc in location.names:
             return_list.append(f'{loc}')
             for character in location.names[loc].characters:
                 return_list.append(f'\tA funloving character named {character}')
-        return(return_list)        
-        
+        return (return_list)
+
     def list():
         return_list = []
         for loc in location.names:
             return_list.append(loc)
-        return(return_list)
+        return (return_list)
+
 
 class ports:
     __all = {}
+
     def __init__(self, name):
         self.name = name
         self.description = "This is a generic port.  Everything is normal"
@@ -189,14 +215,14 @@ class ports:
         self.side_b = "empty"
         self.travel = False
         ports.__all[name] = self
-        
+
     def connect(self, side_a, side_b):
         self.travel = True
         self.side_a = side_a
         self.side_b = side_b
-        side_a.ports[side_b.name+self.name] = self
-        side_b.ports[side_a.name+self.name] = self
-        
+        side_a.ports[side_b.name + self.name] = self
+        side_b.ports[side_a.name + self.name] = self
+
     def use(self, character):
         return_list = []
         characters_location = character.location
@@ -207,19 +233,20 @@ class ports:
                 return_list.extend(self.side_a.enter(character))
         else:
             return_list.append("The way is blocked!")
-        return(return_list)
-    
+        return (return_list)
+
     def list():
         for port in ports.__all:
             print(f'{port} is connecting {ports.__all[port].side_a.name} '
                   f'to {ports.__all[port].side_b.name}')
+
 
 class entity:
     def __init__(self, name):
         self.name = name
         self.description = "Long description of an entity"
         self.short_description = "Short description of an entity"
-     
+
 
 def format(list):
     for line in list:
