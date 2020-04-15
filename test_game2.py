@@ -97,12 +97,17 @@ while command != "exit":
         response = player_char.view_inventory()
         game.format(response)
 
-
-
+    elif action == "TAKE":
+        takeThing = input(f' Enter the name of the item you wish to take. \n')
+        response = player_char.take(takeThing)
+        game.format(response)
+        
     elif action == "DROP":
         dropThing = input(f'Enter the name or inventory slot of the item you wish to drop. \n')
         response = player_char.drop(dropThing)
         game.format(response)
+    else:
+        print(f'The command {action} does not appear to be valid')
 
     command = input(f'\nWhat would you like to do now, {player_name}? ')
     print('\n\n')

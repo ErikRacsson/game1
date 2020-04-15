@@ -93,12 +93,13 @@ class characters:
         return(return_list)
     
     def take(self, thing_to_take):
+        return_list = []
         #Look to see if item is in room.
         items_in_room = self.location.list_entities()
         if thing_to_take in items_in_room:
             self.inventory.append(self.location.take_entity(thing_to_take))
-            return(SUCCESS)
-        return(ERR_NOT_THERE)
+            return_list.append(f" You've taken {thing_to_take} ")
+        return(return_list)
         #If in room, character take item into inventory (removed from room's
         #inventory)
         #If not in room, fail to take item
