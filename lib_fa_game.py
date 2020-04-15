@@ -19,14 +19,9 @@ class characters:
         self.location = "new"
         location.enter(self)
         self.inventory = []
+        self.__init_inventory()
     
     def __init_attributes(self):
-<<<<<<< Updated upstream
-        self.attributes["strength"] = random.randint(1,10)
-        self.attributes["intelligence"] = random.randint(1,10)
-        self.attributes["dexterity"] = random.randint(1,10)
-    
-=======
         self.attributes["strength"] = random.randint(1, 10)
         self.attributes["intelligence"] = random.randint(1, 10)
         self.attributes["dexterity"] = random.randint(1, 10)
@@ -40,12 +35,6 @@ class characters:
        self.inventory.append(ring)
        self.inventory.append(mousecatool)
 
-
-
-
-
-
-
     def drop(self, thing_to_drop):
         return_list = []
         if thing_to_drop.isdigit():
@@ -55,16 +44,12 @@ class characters:
         else:
             for item in self.inventory:
                 if item.name == thing_to_drop:
-                    self.location.put_entity(thing_to_drop)
+                    self.location.put_entity(item)
                     self.inventory.remove(item)
                     return_list.append(f'\n {thing_to_drop} dropped!\n')
                     break
         return(return_list)
 
-
-
-
->>>>>>> Stashed changes
     def describe(self):
         print("{} is a {}.".format(self.name, self.race))
         for attribute in self.attributes:
@@ -112,33 +97,19 @@ class characters:
         items_in_room = self.location.list_entities()
         if thing_to_take in items_in_room:
             self.inventory.append(self.location.take_entity(thing_to_take))
-<<<<<<< Updated upstream
             return(SUCCESS)
         return(ERR_NOT_THERE)
         #If in room, character take item into inventory (removed from room's
         #inventory)
         #If not in room, fail to take item
     
-=======
-            return (SUCCESS)
-        return (ERR_NOT_THERE)
-
-
-
-
->>>>>>> Stashed changes
     def view_inventory(self):
         return_list = []
         i = 0
         for item in self.inventory:
-<<<<<<< Updated upstream
-            return_list.append(item.name)
-        return(return_list)
-=======
             i += 1
             return_list.append(f' {i} {item.name}')
         return (return_list)
->>>>>>> Stashed changes
 
     def count():
         return(len(characters.names))
@@ -166,12 +137,8 @@ class location:
         self.characters = dict()
         self.ports = {}
         self.entities = {}
-<<<<<<< Updated upstream
-        
-=======
         self.items = {}
 
->>>>>>> Stashed changes
     def look(self):
         return_list = []
         return_list.append(self.name)
@@ -215,11 +182,7 @@ class location:
 
     def put_entity(self, item):
         self.entities[item.name] = item
-<<<<<<< Updated upstream
-        
-=======
 
->>>>>>> Stashed changes
     def list_entities(self):
         return_list = []
         for entity in self.entities:
