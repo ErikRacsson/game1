@@ -19,6 +19,7 @@ class characters:
         self.location = "new"
         location.enter(self)
         self.inventory = []
+        self.__init_inventory()
     
     def __init_attributes(self):
         self.attributes["strength"] = random.randint(1, 10)
@@ -43,7 +44,7 @@ class characters:
         else:
             for item in self.inventory:
                 if item.name == thing_to_drop:
-                    self.location.put_entity(thing_to_drop)
+                    self.location.put_entity(item)
                     self.inventory.remove(item)
                     return_list.append(f'\n {thing_to_drop} dropped!\n')
                     break
