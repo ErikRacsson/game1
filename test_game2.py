@@ -75,40 +75,40 @@ def commands():
     for command in commands_list:
         print(f'{command}:  {commands_list[command]}')
     
-def main():
+#def main():
 
-    print(f"\n\n Welcome to the game {player_name}!")
-    game.format(player_char.look_around())
-    print(f'\n What would you like to do now, {player_name}? ')
-    command = input(f'Type "commands" for options \n')
+print(f"\n\n Welcome to the game {player_name}!")
+game.format(player_char.look_around())
+print(f'\n What would you like to do now, {player_name}? ')
+command = input(f'Type "commands" for options \n')
+print('\n\n')
+while command != "exit":
+    command_list = command.split(' ')
+    action = command_list[0].upper()
+    if len(command_list) > 1:
+        object = command_list[1]
+        if action == "GO":
+            game.format(player_char.move(object))
+    elif action == "LOOK":
+        game.format(player_char.look_around())
+    elif action == "COMMANDS":
+        commands()
+    elif action == "INVENTORY":
+        response = player_char.view_inventory()
+        game.format(response)
+
+
+
+    elif action == "DROP":
+        dropThing = input(f'Enter the name or inventory slot of the item you wish to drop. \n')
+        response = player_char.drop(dropThing)
+        game.format(response)
+
+    command = input(f'\nWhat would you like to do now, {player_name}? ')
     print('\n\n')
-    while command != "exit":
-        command_list = command.split(' ')
-        action = command_list[0].upper()
-        if len(command_list) > 1:
-            object = command_list[1]
-            if action == "GO":
-                game.format(player_char.move(object))
-        elif action == "LOOK":
-            game.format(player_char.look_around())
-        elif action == "COMMANDS":
-            commands()
-        elif action == "INVENTORY":
-            response = player_char.view_inventory()
-            game.format(response)
 
-
-
-        elif action == "DROP":
-            dropThing = input(f'Enter the name or inventory slot of the item you wish to drop. \n')
-            response = player_char.drop(dropThing)
-            game.format(response)
-
-        command = input(f'\nWhat would you like to do now, {player_name}? ')
-        print('\n\n')
+print(f'Goodbye {player_name}, I do hope you had fun')
     
-    print(f'Goodbye {player_name}, I do hope you had fun')
-    
-if __name__ == "__main__":
-    main()
-    exit()
+#if __name__ == "__main__":
+#    main()
+   # exit()
