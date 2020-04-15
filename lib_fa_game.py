@@ -21,12 +21,6 @@ class characters:
         self.inventory = []
     
     def __init_attributes(self):
-<<<<<<< Updated upstream
-        self.attributes["strength"] = random.randint(1,10)
-        self.attributes["intelligence"] = random.randint(1,10)
-        self.attributes["dexterity"] = random.randint(1,10)
-    
-=======
         self.attributes["strength"] = random.randint(1, 10)
         self.attributes["intelligence"] = random.randint(1, 10)
         self.attributes["dexterity"] = random.randint(1, 10)
@@ -39,12 +33,6 @@ class characters:
        self.inventory.append(lint)
        self.inventory.append(ring)
        self.inventory.append(mousecatool)
-
-
-
-
-
-
 
     def drop(self, thing_to_drop):
         return_list = []
@@ -61,10 +49,6 @@ class characters:
                     break
         return(return_list)
 
-
-
-
->>>>>>> Stashed changes
     def describe(self):
         print("{} is a {}.".format(self.name, self.race))
         for attribute in self.attributes:
@@ -152,12 +136,8 @@ class location:
         self.characters = dict()
         self.ports = {}
         self.entities = {}
-<<<<<<< Updated upstream
-        
-=======
         self.items = {}
 
->>>>>>> Stashed changes
     def look(self):
         return_list = []
         return_list.append(self.name)
@@ -201,11 +181,7 @@ class location:
 
     def put_entity(self, item):
         self.entities[item.name] = item
-<<<<<<< Updated upstream
-        
-=======
 
->>>>>>> Stashed changes
     def list_entities(self):
         return_list = []
         for entity in self.entities:
