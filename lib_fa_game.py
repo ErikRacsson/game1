@@ -112,33 +112,19 @@ class characters:
         items_in_room = self.location.list_entities()
         if thing_to_take in items_in_room:
             self.inventory.append(self.location.take_entity(thing_to_take))
-<<<<<<< Updated upstream
             return(SUCCESS)
         return(ERR_NOT_THERE)
         #If in room, character take item into inventory (removed from room's
         #inventory)
         #If not in room, fail to take item
     
-=======
-            return (SUCCESS)
-        return (ERR_NOT_THERE)
-
-
-
-
->>>>>>> Stashed changes
     def view_inventory(self):
         return_list = []
         i = 0
         for item in self.inventory:
-<<<<<<< Updated upstream
-            return_list.append(item.name)
-        return(return_list)
-=======
             i += 1
             return_list.append(f' {i} {item.name}')
         return (return_list)
->>>>>>> Stashed changes
 
     def count():
         return(len(characters.names))
