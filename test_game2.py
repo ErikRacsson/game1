@@ -10,6 +10,9 @@ mailbox.description = \
 even got here.  Very odd.  Anyway, looking around you can see what looks like
 steps leading to a patio...'''
 
+newCD= game.CD("ChrisCD", "various", "Kidz Bop")
+mailbox.put_entity(newCD)
+
 shrub = game.location("Shrubbery")
 shrub.short_description = "This is the shrubbery"
 shrub.description = \
