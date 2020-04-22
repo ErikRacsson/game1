@@ -248,6 +248,76 @@ class entity:
         self.name = name
         self.description = "Long description of an entity"
         self.short_description = "Short description of an entity"
+        
+
+class envelope(entity):
+    def __init__(self, name, width=4.25, height=9.5, window=False):
+          entity.__init__(self, name)
+          self.description = "describe"
+          self.width = width
+          self.height = height
+          self.window = window
+          self.flap_state = "Closed"
+          self.contents = []
+                   
+    def size(self):
+          return("{}inches by {} inches".format(self.width, self.height))
+                
+    def describe(self):
+        return_list = []
+        return_list.append("f'The size of the envelope is: {self.size}.")
+        return_list.append("f'The flap state is {self.flap_state}.")
+        if self.window:
+            return_list.append("this has a window")
+        else:
+            return_list.append("this doesn't have a window")
+        return(return_list)
+                       
+    def open(self):
+        self.flap_state = "Open"
+        
+    def insert(self, ThingtoInsert):
+        return_list = []
+        self.contents.append(ThingtoInsert)
+        return_list.append(f"You've inserted the {ThingtoInsert.name}!")
+        return(return_list)
+
+    def remove(self, ThingtoRemove):
+        return_list = []
+        self.contents.remove(ThingtoRemove)
+        return_list.append(f"You've removed the {ThingtoRemove.name}!")
+        return(return_list)
+    
+    def look_inside(self):
+        return_list = []
+        for entity in self.contents:
+            return_list.append(f'There is a {entity.name} in here!')
+        return(return_list)
+    
+    def take_envelope_contents(self, thing_to_take):
+         contents_in_envelope = self.envelope.list_entities()
+         if thing_to_take in contents_in_envelope:
+            self.inventory.append(self.envelope.take_entity(thing_to_take))
+            return_list.append(f" You've taken {thing_to_take} ")
+         return(return_list)
+        
+
+class big_envelope(envelope):
+    def __init__(self, name):
+        envelope.__init__(self, name, 100, 200)
+        
+        
+class CD_envelope(envelope):
+    def __init__(self, name):
+        envelope.__init__(self, name, 5, 5, True)
+        self.description = \
+        '''This envelope is rather small, only 5" by 5". A round window on the
+           front indicates that this particular envelope is used to hold disks.
+           The white color is rather boring, but I suppose it IS just an
+           envelope. It doesn't have to look interesting.'''
+        self.short_description = \
+        '''This small envelope is used to hold disks.'''
+        
      
 
 def format(list):
