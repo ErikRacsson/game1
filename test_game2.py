@@ -10,6 +10,9 @@ mailbox.description = \
 even got here.  Very odd.  Anyway, looking around you can see what looks like
 steps leading to a patio...'''
 
+newCD= game.CD("ChrisCD", "various", "Kidz Bop")
+mailbox.put_entity(newCD)
+
 shrub = game.location("Shrubbery")
 shrub.short_description = "This is the shrubbery"
 shrub.description = \
@@ -66,8 +69,11 @@ while player_char == game.ERR_NAME_EXISTS:
                         f"name is already here.\nPlease choose another name")
     player_char = game.characters.createchar(player_name,mailbox)
 
-commands_list = {'Look' : 'Look around', 'Go' : 'as in "go PatioSteps"',
+commands_list = {'Look' : 'Look around',
+                 'Go' : 'as in "go PatioSteps"',
                  'Exit' : 'as in exit the game',
+                 'Take' : 'as in take item',
+                 'Drop' : 'as in drop item',
                  'Commands' : 'as in give this list'}
 
 def commands():
@@ -83,12 +89,16 @@ print(f'\n What would you like to do now, {player_name}? ')
 command = input(f'Type "commands" for options \n')
 print('\n\n')
 while command != "exit":
-    command_list = command.split(' ')
+    command_list = command.split(' ', 1)
     action = command_list[0].upper()
     if len(command_list) > 1:
         object = command_list[1]
         if action == "GO":
             game.format(player_char.move(object))
+        elif action == "TAKE":
+            game.format(player_char.take(object))
+        elif action == "DROP":
+            game.format(player_char.drop(object))
     elif action == "LOOK":
         game.format(player_char.look_around())
     elif action == "COMMANDS":

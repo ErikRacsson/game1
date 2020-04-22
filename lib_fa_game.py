@@ -318,7 +318,16 @@ class CD_envelope(envelope):
         self.short_description = \
         '''This small envelope is used to hold disks.'''
         
-     
+ 
+
+class CD(entity):
+    def __init__(self, name, artist="", album_name="" ):
+        entity.__init__(self, name)
+        self.artist = artist
+        self.album_name = album_name
+        self.short_description = f'{album_name} CD'
+        self.description = f'A CD with the album {album_name} by {artist}'
+
 
 def format(list):
     for line in list:
